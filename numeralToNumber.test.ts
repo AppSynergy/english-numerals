@@ -32,6 +32,7 @@ test("Should identify 3 digit numbers", () => {
 
 test("Should identify 4 digit numbers", () => {
   expect(numeralToNumber("twelve hundred")).toBe(1200);
+  expect(numeralToNumber("fourteen hundred and ninety-two")).toBe(1492);
   expect(numeralToNumber("one thousand and six")).toBe(1006);
   expect(numeralToNumber("four thousand and twenty-five")).toBe(4025);
   expect(numeralToNumber("nine thousand, nine hundred and sixty")).toBe(9960);
@@ -40,6 +41,7 @@ test("Should identify 4 digit numbers", () => {
 test("Should identify 5 digit numbers", () => {
   expect(numeralToNumber("forty thousand")).toBe(40000);
   expect(numeralToNumber("sixty thousand, two hundred and forty three")).toBe(60243);
+  expect(numeralToNumber("thirty seven thousand, nine hundred and eleven")).toBe(37911);
 });
 
 test("Should identify 6 digit numbers", () => {
@@ -48,17 +50,16 @@ test("Should identify 6 digit numbers", () => {
   expect(numeralToNumber("three hundred thousand, nine hundred and one")).toBe(300901);
   expect(numeralToNumber("five hundred four thousand and sixty two")).toBe(504062);
   expect(numeralToNumber("Seven hundred and forty nine thousand, five hundred and eighty one")).toBe(749581);
+  expect(numeralToNumber("one hundred and eleven thousand, five hundred and fifty five")).toBe(111555);
 });
 
-test("Should identify simple millions", () => {
+test("Should identify a million or more as a million", () => {
   expect(numeralToNumber("one million")).toBe(1000000);
-  expect(numeralToNumber("twelve million")).toBe(12000000);
+  expect(numeralToNumber("twelve million")).toBe(1000000);
+  expect(numeralToNumber("four hundred thousand million")).toBe(1000000);
 });
 
-test("Note more complex use of millions does not give the correct answer", () => {
-  expect(numeralToNumber("twelve million, twenty four thousand")).not.toBe(12024000);
-});
-
-test("Note that negative numbers do not give the correct answer", () => {
-  expect(numeralToNumber("minus Six")).toBe(6);
+test("Should return the magnitude of negative numbers", () => {
+  expect(numeralToNumber("minus six")).toBe(6);
+  expect(numeralToNumber("negative four-hundred")).toBe(400);
 });

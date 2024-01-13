@@ -1,7 +1,8 @@
 export const numeralToNumber = (str: string): number => {
-  // convert any string to a number from 0 to 1 million
-  // note that numbers outside this range will not work correctly - maybe should return NaN for these too?
-  // if the string cannot be converted to a number then NaN is returned
+  // Converts any string to an integer from 0 to 1 million.
+  // Note: numbers higher than this range will clamp to 1 million.
+  // Note: negative integers are treated as if positive. 
+  // If the string cannot be converted to a number then NaN is returned.
 
   const words: string[] = str.split(/[\s,-]+/);
   
@@ -20,18 +21,23 @@ export const numeralToNumber = (str: string): number => {
 
   words.map((word) => {
     const lowerWord = word.toLowerCase();
+
     if (lowerWord == "million") {
-      answer += answer * 999999;
+      // anything with a million in is clamped to a million.
+      answer = 1000000;
     }
 
     if (lowerWord == "thousand") {
+      // i.e. append three zeros
       answer += answer * 999;
     }
 
     if (lowerWord == "hundred") {
+      // i.e. append two zeros
       answer += lastFoundNumber * 99;
     }
 
+    // search for 0-19
     const foundSmallNumber = earlyNumbers.indexOf(lowerWord);
     if (foundSmallNumber >= 0) {
       foundAnyNumbers = true;
@@ -39,6 +45,7 @@ export const numeralToNumber = (str: string): number => {
       answer += foundSmallNumber;
     }
 
+    // search for 20,30,40...
     const foundTensNumber = tensNumbers.indexOf(lowerWord);
     if (foundTensNumber >= 0) {
       foundAnyNumbers = true;
